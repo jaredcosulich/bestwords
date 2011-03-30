@@ -1,0 +1,47 @@
+!!!
+%html
+  %head
+    %title BestWords.Me
+    = stylesheet_link_tag 'scaffold'
+    = stylesheet_link_tag 'reset'
+    = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'site'
+    = stylesheet_link_tag 'forms'
+    = javascript_include_tag :defaults
+    = csrf_meta_tag
+
+  %meta{:property => "title", :content => "#{@page_title || DEFAULT_PAGE_TITLE}"}
+  %meta{:property => "description", :content => "#{@page_description || DEFAULT_PAGE_DESCRIPTION}"}
+
+  = content_for :page_specific_head
+
+  %body
+    #header
+      #header_content
+        %h1.site-title BestWords.Me
+        .header_links
+          = link_to 'Home', '/'
+          - if user_signed_in?
+            = link_to 'Profile', profile_path(current_user)
+            = link_to 'Edit Profile', edit_user_registration_path(current_user)
+            = link_to "Sign out", destroy_user_session_path
+          - else
+            = link_to "Sign up", new_user_registration_path
+          = link_to "Sign in", new_user_session_path
+
+
+
+    #overall_container
+      #content
+        #user_nav
+
+        = raw notice_html
+        = raw alert_html
+
+        = yield
+
+    #footer
+      copyright and stuff
+
+    %script{:type => "text/javascript", :src => "http://platform.twitter.com/widgets.js"}
+    %script{:type => "text/javascript", :src => "http://connect.facebook.net/en_US/all.js#xfbml=1"}
