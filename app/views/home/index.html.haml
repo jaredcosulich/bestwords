@@ -1,1 +1,11 @@
 %h1.tagline What words best describe you?
+
+%p What words would your friends and family use to describe you?
+%p Create your own bestwords.me page and find out :)
+
+.new_profile
+  %h2 Your Personal Page:
+  = form_for(:user, :url => profiles_path) do |f|
+    = f.label :slug, "http://bestwords.me/"
+    = f.text_field :slug
+    = f.submit("Create >", :style => "width: 5em")

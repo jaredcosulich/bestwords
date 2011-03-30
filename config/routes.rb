@@ -1,5 +1,7 @@
 OmniauthDeviseExample::Application.routes.draw do
   resources :sharings
+  resources :profiles
+  resource :about, :controller => "about"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", :registrations => 'registrations'}
   
   # The priority is based upon order of creation:
