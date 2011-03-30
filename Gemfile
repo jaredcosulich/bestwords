@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rake'
 gem 'rails', '3.0.5'
-gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'pg'
 gem 'devise', :git => 'git://github.com/plataformatec/devise', :branch => 'master'
 gem 'omniauth', '0.2.0'
 gem 'paperclip'
