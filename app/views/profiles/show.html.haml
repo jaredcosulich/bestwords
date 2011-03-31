@@ -1,1 +1,89 @@
-<img src="http://chart.apis.google.com/chart?chxl=1:|Friendly|Creative|Smart|Handsome|Humble|Brilliant|Genius|Charming|Funny|Awesome&chxr=0,0,155&chxt=x,y&chbh=a,12&chs=600x473&cht=bhs&chco=4D89F9&chds=0,160&chd=t:10,50,60,80,40,60,30&chma=|5&chtt=Words+that+best+describe+Jared&chts=676767,16" width="600" height="473" alt="Words that best describe Jared" />
+%h1
+  What words best describe
+  = "#{@user.name || @user.slug}?"
+
+- if @my_words.present?
+  .section
+    Your words:
+    = @my_words.map(&:word).join(", ")
+    = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
+  .section
+    
+#my_words{:style => @my_words.blank? ? "" : "display: none;"}
+  %h3
+    Describe
+    = @user.name || @user.slug
+    by
+    = "clicking on a word or" if @suggested_words.present? || @owner
+    entering words below.
+
+  .section
+    = form_tag(profile_words_path(@user)) do
+      %h3
+        Your words:
+        = text_field_tag :words, @my_words.map(&:word).join(", "), :style => "font-size: 12pt; width: 24em;"
+        = submit_tag("Save Words")
+      .small
+        (comma separated list - example: nice, caring, fun, laid-back)
+
+  - if @suggested_words.present? || @owner
+    .section
+      %h3
+        Some Suggestions
+        %span.inline_link
+          (click on a link to add that word to the list)
+      %p.suggested_words
+        - if @suggested_words.blank? && @owner
+          You haven't provided any suggestions. You can do so in the "Edit Page / Profile" area below.
+        - else
+          = @suggested_words.split(",").map(&:strip).collect { |w| link_to_function(w, "$('#words').val($('#words').val() + ($('#words').val().length > 0 ? ', ' : '') + '#{w}');") }.join("").html_safe
+
+- if @my_words.present? || @owner
+  .section
+    %h3 The Results
+    %br
+    = word_chart(@user, @words)
+
+- if @owner
+  .edit_profile.section
+    %h3 Edit Your Page / Profile
+    = form_for @user do |f|
+      .profile_field
+        = f.label :name, "Your Name: "
+        = f.text_field :name
+        .small
+          (will be used in the
+          = "\"What words best describe #{@user.name || @user.slug}?\""
+          above)
+      .profile_field
+        = f.label :email, "Your Email: "
+        = f.text_field :email, :value => @user.email.starts_with?("tmp") ? "" : @user.email
+        .small
+          (we'll only email you if anyone fills out your page)
+      .profile_field
+        = f.label :password, "Your Password: "
+        = f.password_field :password
+        .small
+          (so you can log in and see the results)
+      .profile_field
+        = f.label :suggested_words, "Suggested Words: "
+        = f.text_field :suggested_words
+        .small
+          (get the ball rolling with some suggestions - comma separated)
+        .small
+          (examples: fun, good looking, smart, spontaneous, nice, caring, generous, creative)
+      = f.submit("Save")
+
+- if @my_words.present?
+  .section
+    %h3 Thanks for playing!
+    %p
+      Now
+      - unless @owner
+        create your own
+        = link_to("BestWords.Me page >", "/")
+        %br
+        %br
+        or
+      check out the game that inspired BestWords.me,
+      = link_to("The Matching Game >", "http://www.thematchinggame.com")

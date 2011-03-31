@@ -17,7 +17,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_many :sharings
+  has_many  :sharings
+  has_many  :words
 
   has_attached_file :photo,
                     :styles => {
@@ -34,7 +35,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :omniauthable, :validatable #:flexible_devise_validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :slug
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :slug, :suggested_words
 
   FAKE_PASSWORD = "esudfhi3r33"
 

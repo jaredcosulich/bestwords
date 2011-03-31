@@ -1,14 +1,16 @@
 class ProfilesController < ApplicationController
   def show
-    @user = User.find_by_slug(params[:id])
+    @user = User.find_by_slug(params[:id], :include => :words)
 
     if @user.nil?
       redirect_to '/'
-    end    
-  end
+    end
 
-  def create
-    @user = User.create(params[:user].merge(:email => "tmp#{Time.new.to_i}@example.com", :password => User::FAKE_PASSWORD, :password_confirmation => User::FAKE_PASSWORD))
-    redirect_to profile_path(@user)
+    @words = @user.words
+
+    @my_words = @words.select { |w| w.ip == request.remote_ip}
+
+    @owner = current_user == @user
+    @suggested_words = @user.suggested_words
   end
 end
