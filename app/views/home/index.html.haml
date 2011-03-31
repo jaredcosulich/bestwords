@@ -9,3 +9,9 @@
     = f.label :slug, "http://bestwords.me/"
     = f.text_field :slug
     = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")
+
+.sample
+  = image_tag("user_photos/sample.jpg")
+  %h3 A Sample
+  %h3= link_to("bestwords.me/sample_the_dog", profile_path("sample_the_dog"))
+  %p works for people and pets :)

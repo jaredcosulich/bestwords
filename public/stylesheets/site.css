@@ -173,6 +173,20 @@ p {
     font-size: 16pt;
     width: 15em; }
 
+.sample {
+  width: 390px;
+  border: 1px solid #cccccc;
+  padding: 12px;
+  margin: 30px auto;
+  overflow: hidden; }
+  .sample img {
+    float: left;
+    margin-right: 12px; }
+  .sample h3 {
+    padding-top: 12px; }
+  .sample p {
+    padding: 6px 0; }
+
 /******* Profile Page ****** */
 .edit_profile {
   padding: 12px;
