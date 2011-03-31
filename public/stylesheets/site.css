@@ -59,32 +59,25 @@ body {
   -o-box-shadow: -24px 3px 24px #333333;
   box-shadow: -24px 3px 24px #333333;
   margin-bottom: 15px; }
-  #header a {
-    padding: 0 12px;
-    display: block;
-    float: right;
-    color: #999999; }
-    #header a:visited {
-      color: #999999;
-      padding: 0 12px;
-      display: block;
-      float: right; }
-    #header a:hover {
-      color: white; }
-    #header a:first {
-      padding-right: 0; }
   #header .header_links {
     position: absolute;
     right: 0;
     bottom: 2px;
     display: block; }
-  #header .title, #header .title:visited {
-    position: absolute;
-    bottom: 0;
-    display: block;
-    left: 0;
-    padding-bottom: 2px;
-    color: white; }
+    #header .header_links a {
+      padding: 0 12px;
+      display: block;
+      float: right;
+      color: #999999; }
+      #header .header_links a:visited {
+        color: #999999;
+        padding: 0 12px;
+        display: block;
+        float: right; }
+      #header .header_links a:hover {
+        color: white; }
+      #header .header_links a:first {
+        padding-right: 0; }
   #header #header_content {
     height: 3em;
     width: 756px;
@@ -93,8 +86,10 @@ body {
     zoom: 1;
     position: relative; }
     #header #header_content h1 {
-      font-size: 19pt;
-      color: white; }
+      margin-top: 20px;
+      font-size: 19pt; }
+      #header #header_content h1 .site_title {
+        color: white; }
 
 #overall_container {
   text-align: center;

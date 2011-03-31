@@ -23,7 +23,7 @@ module ApplicationHelper
 
     img_src = ["http://chart.apis.google.com/chart?chxl=1:|"]
     img_src << sorted_words.reverse.collect { |word_info| word_info[0] }.join("|")
-    img_src << "&chxr=0,0,#{sorted_words.first[1] + (sorted_words.first[1].to_f * 0.10).ceil},1"
+    img_src << "&chxr=0,0,#{sorted_words.first[1] + (sorted_words.first[1].to_f * 0.10).ceil},#{(sorted_words.first[1].to_f / 10.0).ceil}"
     img_src << "&chxt=x,y"
     img_src << "&chbh=a,12"
     img_src << "&chs=600x473"

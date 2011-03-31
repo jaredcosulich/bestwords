@@ -22,10 +22,7 @@ class User < ActiveRecord::Base
 
   has_attached_file :photo,
                     :styles => {
-                            :mini => "40x40#",
-                            :thumb => "80x80#",
-                            :small => "100x100#",
-                            :big => "150x150#"
+                      :normal => "120x120#"
                     },
                     :default_url => "/images/user_photos/missing_:style.png"
 
@@ -38,6 +35,11 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :slug, :suggested_words
 
   FAKE_PASSWORD = "esudfhi3r33"
+  SAMPLE_USER = User.new(
+    :slug => "sample_the_dog",
+    :name => "Sample the Dog",
+    :suggested_words => "cute, cuddly, fun, best-friend, smart, good at tricks, adorable, energetic"
+  )
 
   def self.new_with_session(params, session)
     super.tap do |user|

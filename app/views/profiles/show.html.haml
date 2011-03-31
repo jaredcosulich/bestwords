@@ -1,3 +1,8 @@
+- unless @user != User::SAMPLE_USER && @user.photo.url(:normal) =~ /missing/
+  = image_tag(@user == User::SAMPLE_USER   ? "user_photos/sample.jpg" : @user.photo.url(:normal))
+  %br
+  %br
+  
 %h1
   What words best describe
   = "#{@user.name || @user.slug}?"
