@@ -39,7 +39,10 @@
           (click on a link to add that word to the list)
       %p.suggested_words
         - if @suggested_words.blank? && @owner
-          You haven't provided any suggestions. You can do so in the "Edit Page / Profile" area below.
+          You haven't added any suggested words.
+          %br
+          %br
+          Add them in the "Edit Page / Profile" area below.
         - else
           = @suggested_words.split(",").map(&:strip).collect { |w| link_to_function(w, "$('#words').val($('#words').val() + ($('#words').val().length > 0 ? ', ' : '') + '#{w}');") }.join("").html_safe
 
@@ -47,7 +50,10 @@
   .section
     %h3 The Results
     %br
-    = word_chart(@user, @words)
+    - if @words.empty? && @owner
+      No one has added any words to describe you yet.
+    - else
+      = word_chart(@user, @words)
 
 - if @owner
   .edit_profile.section
@@ -78,6 +84,12 @@
         .small
           (examples: fun, good looking, smart, spontaneous, nice, caring, generous, creative)
       = f.submit("Save")
+
+  .share_profile.section
+    %h3 Share Your Page
+    %p Share either of these links with your friends:
+    %p= link_to("bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
+    %p= link_to("bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
 
 - if @my_words.present?
   .section

@@ -188,21 +188,23 @@ p {
     padding: 6px 0; }
 
 /******* Profile Page ****** */
-.edit_profile {
+.edit_profile, .share_profile {
   padding: 12px;
   border: 1px solid #cccccc;
   background-color: #fffa9c;
-  margin: 120px 0 60px 0; }
-  .edit_profile .profile_field {
+  margin: 60px 0; }
+  .edit_profile .profile_field, .share_profile .profile_field {
     padding: 12px 0; }
-    .edit_profile .profile_field .small {
+    .edit_profile .profile_field .small, .share_profile .profile_field .small {
       margin-top: 3px; }
+
+.edit_profile {
+  margin-top: 120px; }
 
 .suggested_words {
   overflow: hidden;
   width: 80%;
   margin: auto; }
   .suggested_words a {
-    display: block;
-    float: left;
+    display: inline-block;
     padding: 6px 12px; }

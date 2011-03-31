@@ -11,8 +11,8 @@ class ProfilesController < ApplicationController
         redirect_to '/' and return
       end
 
-      @my_words = @words.select { |w| w.ip == request.remote_ip}
       @words = @user.words
+      @my_words = @words.select { |w| w.ip == request.remote_ip}
     end
     
     @owner = current_user == @user

@@ -8,7 +8,6 @@ class UsersController < ApplicationController
   def update
     @user = User.find_by_slug(params[:id])
     @user.update_attributes(params[:user].delete_if { |k,v| v.blank? })
-    raise @user.reload.suggested_words.inspect
     redirect_to(profile_path(@user))
   end
 

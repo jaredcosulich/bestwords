@@ -5,7 +5,7 @@
 
 .new_profile
   %h2 Your Personal Page:
-  = form_for(:user) do |f|
+  = form_for(@user) do |f|
     = f.label :slug, "http://bestwords.me/"
     = f.text_field :slug
     = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")
