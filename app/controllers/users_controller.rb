@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @user = User.find_by_slug(params[:id])
     @user.update_attributes(params[:user].delete_if { |k,v| v.blank? })
     sign_in(@user)
+    flash[:notice] = "Changes Saved"
     redirect_to(profile_path(@user))
   end
 

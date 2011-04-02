@@ -215,6 +215,7 @@ class AddWords < ActiveRecord::Migration
       "hard-working",
       "hardy",
       "harsh",
+      "heartfelt",
       "helpful",
       "hick",
       "hillbilly",

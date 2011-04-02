@@ -83,8 +83,8 @@
   .edit_profile
     %h3 Edit Your Page / Profile
     - unless @user.email.starts_with?("tmp")
-      %p= link_to_function("edit", "$('#edit_profile_form').toggle();")
-    = form_for @user, :id => "edit_profile_form", :style => (@user.email.present? ? "display: none;" : "") do |f|
+      %p= link_to_function("click to edit", "$('#edit_profile_form').toggle();")
+    = form_for @user, :html => {:id => "edit_profile_form", :style => (@user.email.present? ? "display: none;" : "")} do |f|
       .profile_field
         = f.label :slug, "Your Page: http://bestwords.me/"
         = f.text_field :slug
@@ -212,5 +212,9 @@
         %br
         %br
         or
-      check out the game that inspired BestWords.me,
+      check out the game I built that inspired BestWords.me,
       = link_to("The Matching Game >", "http://www.thematchinggame.com")
+      %br
+      %br
+      or, if you're getting married, check out my other site,
+      = link_to("WeddingMapper >", "http://www.weddingmapper.com")
