@@ -448,7 +448,7 @@ class AddWords < ActiveRecord::Migration
 
   def self.down
     drop_table :words
-    drop_table :user_words
-    remove_column :users, :ip
+#    drop_table :user_words
+    remove_column :users, :suggested_words
   end
 end
