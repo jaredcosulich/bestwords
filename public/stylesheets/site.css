@@ -195,14 +195,11 @@ p {
   padding: 12px;
   border: 1px solid #cccccc;
   background-color: #fffa9c;
-  margin: 60px 0; }
+  margin-bottom: 30px; }
   .edit_profile .profile_field, .share_profile .profile_field {
     padding: 12px 0; }
     .edit_profile .profile_field .small, .share_profile .profile_field .small {
       margin-top: 3px; }
-
-.edit_profile {
-  margin-top: 120px; }
 
 .suggested_words {
   overflow: hidden;

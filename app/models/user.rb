@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   end
 
   has_many  :sharings
-  has_many  :words
+  has_many  :user_words
 
   has_attached_file :photo,
                     :styles => {
@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
   FAKE_PASSWORD = "esudfhi3r33"
   SAMPLE_USER = User.new(
     :slug => "sample_the_dog",
-    :name => "Sample the Dog"
-  )
+    :name => ""
+  ) rescue nil
 
   def self.new_with_session(params, session)
     super.tap do |user|

@@ -31,12 +31,14 @@
       }
 
       $(".word_list .word").each(function() {
-        if ($(this).html().indexOf(typed) == 0) {
-          $(this).closest("tr").show();
-        } else {
-          $(this).closest("tr").hide();
+        if ($(this).closest("tr").attr("id") != "typed_word") {
+          if ($(this).html().indexOf(typed) == 0) {
+            $(this).closest("tr").show();
+          } else {
+            $(this).closest("tr").hide();
+          }
+          if ($(this).html() == typed) $("#typed_word").hide();
         }
-        if ($(this).closest("tr").attr("id") != "typed_word" && $(this).html() == typed) $("#typed_word").hide();
       });
     });
 
@@ -75,6 +77,46 @@
       addWord(myBadWords[i], "bad_words");
     }
   });
+
+
+- if @owner
+  .edit_profile
+    %h3 Edit Your Page / Profile
+    - unless @user.email.starts_with?("tmp")
+      %p= link_to_function("edit", "$('#edit_profile_form').toggle();")
+    = form_for @user, :id => "edit_profile_form", :style => (@user.email.present? ? "display: none;" : "") do |f|
+      .profile_field
+        = f.label :slug, "Your Page: http://bestwords.me/"
+        = f.text_field :slug
+        .small
+          (you should not change your page url if you have already shared your page with someone else)
+      .profile_field
+        = f.label :name, "Your Name: "
+        = f.text_field :name
+        .small
+          (will be used in the
+          = "\"What words best describe #{@user.name || @user.slug}?\""
+          below)
+      .profile_field
+        = f.label :email, "Your Email: "
+        = f.text_field :email, :value => @user.email.starts_with?("tmp") ? "" : @user.email
+        .small
+          (we'll only email you to notify you when someone fills out your page)
+      .profile_field
+        = f.label :password, "Your Password: "
+        = f.password_field :password
+        .small
+          (so you can log in and see the results)
+      = f.submit("Save")
+
+  .share_profile
+    %h3 Have Your Friends Describe You
+    %p Share either of these links with your friends:
+    %p
+      = link_to("bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+      = link_to("bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
+
 
 
 - unless @user != User::SAMPLE_USER && @user.photo.url(:normal) =~ /missing/
@@ -148,6 +190,8 @@
     %br
     - if @used_words.empty? && @owner
       No one has added any words to describe you yet.
+      %p Add some words yourself to get the ball rolling.
+      Share a link to your page with your friends to see what words they add.
     - else
       - if @good_words.present?
         = word_chart(@user, @good_words, true)
@@ -156,42 +200,6 @@
         %br
       - if @bad_words.present?
         = word_chart(@user, @bad_words, false)
-
-- if @owner
-  .edit_profile.section
-    %h3 Edit Your Page / Profile
-    = form_for @user do |f|
-      .profile_field
-        = f.label :name, "Your Name: "
-        = f.text_field :name
-        .small
-          (will be used in the
-          = "\"What words best describe #{@user.name || @user.slug}?\""
-          above)
-      .profile_field
-        = f.label :email, "Your Email: "
-        = f.text_field :email, :value => @user.email.starts_with?("tmp") ? "" : @user.email
-        .small
-          (we'll only email you if anyone fills out your page)
-      .profile_field
-        = f.label :password, "Your Password: "
-        = f.password_field :password
-        .small
-          (so you can log in and see the results)
-      .profile_field
-        = f.label :suggested_words, "Suggested Words: "
-        = f.text_field :suggested_words
-        .small
-          (get the ball rolling with some suggestions - comma separated)
-        .small
-          (examples: fun, good looking, smart, spontaneous, nice, caring, generous, creative)
-      = f.submit("Save")
-
-  .share_profile.section
-    %h3 Share Your Page
-    %p Share either of these links with your friends:
-    %p= link_to("bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
-    %p= link_to("bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
 
 - if @my_good_words.present? || @my_bad_words.present?
   .section

@@ -2,8 +2,8 @@ class WordsController < ApplicationController
   before_filter :lookup_user
 
   def create
-    words = params[:words].split(',').map(&:strip)
-    words.each { |w| @user.words.create(:word => w, :ip => request.remote_ip) }
+    UserWord.manage_words(@user, request.remote_ip, params[:good_words], true)
+    UserWord.manage_words(@user, request.remote_ip, params[:bad_words], false)
     redirect_to(profile_path(@user))
   end
 

@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(:version => 20110331000313) do
   create_table "user_words", :force => true do |t|
     t.integer  "user_id"
     t.integer  "word_id"
-    t.string   "word"
-    t.boolean  "good",       :default => true
+    t.string   "custom_word"
+    t.boolean  "good",        :default => true
     t.string   "ip"
     t.datetime "created_at"
     t.datetime "updated_at"

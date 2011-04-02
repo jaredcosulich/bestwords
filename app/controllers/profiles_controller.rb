@@ -6,18 +6,19 @@ class ProfilesController < ApplicationController
       @my_bad_words = params.include?(:bad_words) ? params[:bad_words].split(",").map(&:strip).collect { |w| UserWord.new(:word => Word.new(:word => w)) unless w.blank? }.compact : []
       @good_words = UserWord::SAMPLE_BEST_WORDS + @my_good_words
       @bad_words = UserWord::SAMPLE_WORST_WORDS + @my_bad_words
-      @used_words = @good_words + @bad_words
     else
-      @user = User.find_by_slug(params[:id], :include => :words)
+      @user = User.find_by_slug(params[:id], :include => {:user_words => :word})
 
       if @user.nil?
         redirect_to '/' and return
       end
 
-      @words = @user.words
-      @my_words = @words.select { |w| w.ip == request.remote_ip}
+      @good_words, @bad_words = @user.user_words.partition { |uw| uw.good? }
+      @my_good_words = @good_words.select { |w| w.ip == request.remote_ip}
+      @my_bad_words = @bad_words.select { |w| w.ip == request.remote_ip}
     end
-    
+
+    @used_words = @good_words + @bad_words
     @owner = current_user == @user
   end
 end

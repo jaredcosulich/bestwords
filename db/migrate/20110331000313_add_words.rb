@@ -9,7 +9,7 @@ class AddWords < ActiveRecord::Migration
     create_table :user_words do |t|
       t.integer   :user_id
       t.integer   :word_id
-      t.string    :word
+      t.string    :custom_word
       t.boolean   :good, :default => true
       t.string    :ip
 
@@ -50,6 +50,7 @@ class AddWords < ActiveRecord::Migration
       "bad-smelling",
       "badass",
       "bastard",
+      "belligerent",
       "benevolent",
       "big",
       "bigoted",
@@ -62,6 +63,7 @@ class AddWords < ActiveRecord::Migration
       "boorish",
       "boring",
       "bossy",
+      "brash",
       "brave",
       "brilliant",
       "brooding",
@@ -335,6 +337,7 @@ class AddWords < ActiveRecord::Migration
       "presumptive",
       "pretentious",
       "prissy",
+      "psycho",
       "punctual",
       "quick",
       "quiet",
