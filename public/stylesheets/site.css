@@ -157,6 +157,9 @@ body.admin #content {
 .clear {
   clear: both; }
 
+b {
+  font-weight: bold; }
+
 p {
   padding: 12px 0; }
 

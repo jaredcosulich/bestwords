@@ -30,6 +30,19 @@ ActiveRecord::Schema.define(:version => 20110331000313) do
     t.string   "nickname"
   end
 
+  create_table "user_words", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "word_id"
+    t.string   "word"
+    t.boolean  "good",       :default => true
+    t.string   "ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_words", ["user_id"], :name => "index_user_words_on_user_id"
+  add_index "user_words", ["word_id"], :name => "index_user_words_on_word_id"
+
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
@@ -51,7 +64,7 @@ ActiveRecord::Schema.define(:version => 20110331000313) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.string   "slug"
-    t.text     "suggested_words"
+    t.string   "ip"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -59,14 +72,9 @@ ActiveRecord::Schema.define(:version => 20110331000313) do
   add_index "users", ["slug"], :name => "index_users_on_slug"
 
   create_table "words", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "ip"
     t.string   "word"
-    t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "words", ["user_id"], :name => "index_words_on_user_id"
 
 end

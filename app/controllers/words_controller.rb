@@ -14,7 +14,7 @@ class WordsController < ApplicationController
   private
   def lookup_user
     if params[:profile_id] == "sample_the_dog"
-      redirect_to(profile_path("sample_the_dog", :words => params[:words]))
+      redirect_to(profile_path("sample_the_dog", :good_words => params[:good_words], :bad_words => params[:bad_words]))
       return false
     end
     

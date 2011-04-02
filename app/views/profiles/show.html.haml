@@ -1,3 +1,82 @@
+%style
+  == .word_list_container { margin: auto; padding-top: 3em; width: 240px; }
+  == .word_list { height: 210px; overflow: auto; }
+  == .word_list table { width: 225px; }
+  == .word_list td { width: 33% }
+  == .word_list .odd td { background-color: #ddd; }
+  == .word_list td.popular, .word_list td.word { padding: 12px 0; }
+  == .word_list td.first_row { padding-top: 0; }
+  == .word_list td.good { text-align: right; padding-right: 6px; }
+  == .word_list td.bad { text-align: left; padding-left: 6px;  }
+  == .good_words { float: right; }
+  == .bad_words { float: left; }
+  == .selected_words_container_container { width: 224px; }
+  == .selected_words_container_container h3 { padding-bottom: 6px; }
+  == .selected_words_container { margin-top: 3px; border: 1px solid #ccc; height: 265px; width: 222px; overflow: auto; }
+  == .selected_words { padding: 6px 0 12px 0; }
+  == .selected_words .selected_word { display: block; margin-top: 12px; }
+  == #word_progress { font-size: 12pt; margin: 3px 0 6px; }
+  
+:javascript
+  $(function() {
+    $("#word_progress").focus();
+    $("#word_progress").keyup(function() {
+      var typed = $(this).val();
+      $("#typed_word").find(".word").html(typed);
+
+      if (typed.length > 0) {
+        $("#typed_word").show();
+      } else {
+        $("#typed_word").hide();
+      }
+
+      $(".word_list .word").each(function() {
+        if ($(this).html().indexOf(typed) == 0) {
+          $(this).closest("tr").show();
+        } else {
+          $(this).closest("tr").hide();
+        }
+        if ($(this).closest("tr").attr("id") != "typed_word" && $(this).html() == typed) $("#typed_word").hide();
+      });
+    });
+
+    $(".good a").click(function() {
+      clickWord($(this), "good_words");
+    });
+
+    $(".bad a").click(function() {
+      clickWord($(this), "bad_words");
+    });
+
+    function clickWord(link, type) {
+      var word = link.closest("tr").find(".word").html();
+      addWord(word, type);
+      $("#word_progress").val("");
+      $("#word_progress").keyup();
+      $("#word_progress").focus();
+    }
+
+    function addWord(word, type) {
+      $("." + type + " .selected_words").append(
+        $("<a/>").addClass("selected_word").html(word).attr("href", "javascript:void(0)").click(function() {
+          this.parentNode.removeChild(this);
+          $("#" + type).val($("#" + type).val().replace(", " + word, ""));
+        })
+      );
+      $("#" + type).val($("#" + type).val() + ", " + word);
+    }
+
+    var myGoodWords = #{@my_good_words.map(&:word).map(&:word).to_json};
+    var myBadWords = #{@my_bad_words.map(&:word).map(&:word).to_json};
+    for (i in myGoodWords) {
+      addWord(myGoodWords[i], "good_words");
+    }
+    for (i in myBadWords) {
+      addWord(myBadWords[i], "bad_words");
+    }
+  });
+
+
 - unless @user != User::SAMPLE_USER && @user.photo.url(:normal) =~ /missing/
   = image_tag(@user == User::SAMPLE_USER   ? "user_photos/sample.jpg" : @user.photo.url(:normal))
   %br
@@ -7,53 +86,76 @@
   What words best describe
   = "#{@user.name || @user.slug}?"
 
-- if @my_words.present?
+- if @my_good_words.present? || @my_bad_words.present?
   .section
-    Your words:
-    = @my_words.map(&:word).join(", ")
+    %b Your Best Words:
+    = @my_good_words.map(&:word).map(&:word).join(", ")
     = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
-  .section
-    
-#my_words{:style => @my_words.blank? ? "" : "display: none;"}
-  %h3
-    Describe
-    = @user.name || @user.slug
-    by
-    = "clicking on a word or" if @suggested_words.present? || @owner
-    entering words below.
+    %p
+      %b Your Worst Words:
+      = @my_bad_words.map(&:word).map(&:word).join(", ")
+      = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
 
   .section
-    = form_tag(profile_words_path(@user)) do
-      %h3
-        Your words:
-        = text_field_tag :words, @my_words.map(&:word).join(", "), :style => "font-size: 12pt; width: 24em;"
-        = submit_tag("Save Words")
-      .small
-        (comma separated list - example: nice, caring, fun, laid-back)
 
-  - if @suggested_words.present? || @owner
-    .section
-      %h3
-        Some Suggestions
-        %span.inline_link
-          (click on a link to add that word to the list)
-      %p.suggested_words
-        - if @suggested_words.blank? && @owner
-          You haven't added any suggested words.
-          %br
-          %br
-          Add them in the "Edit Page / Profile" area below.
-        - else
-          = @suggested_words.split(",").map(&:strip).collect { |w| link_to_function(w, "$('#words').val($('#words').val() + ($('#words').val().length > 0 ? ', ' : '') + '#{w}');") }.join("").html_safe
+#my_words{:style => (@my_good_words.blank? && @my_bad_words.blank?) ? "" : "display: none;"}
+  = form_tag(profile_words_path(@user)) do
+    .good_words.selected_words_container_container
+      %h3 Best Words
+      = @user.name || @user.slug
+      is definitely:
+      .selected_words_container
+        .selected_words
+          .small click a word to remove it
+    = hidden_field_tag("good_words")
+    .bad_words.selected_words_container_container
+      %h3 Worst Words
+      = @user.name || @user.slug
+      is definitely not:
+      .selected_words_container
+        .selected_words
+          .small click a word to remove it
+    = hidden_field_tag("bad_words")      
+    .word_list_container
+      Type a word or select from the list:
+      = text_field_tag("word_progress")
+      .word_list
+        %table
+          %tbody
+            %tr#typed_word{:style => "display: none;", :class => cycle("even", "odd")}
+              %td.bad= link_to_function("< bad", "")
+              %td.word
+              %td.good= link_to_function("good >", "")
+            - @used_words.map(&:word).uniq.map(&:word).sort.each do |word|
+              %tr{:class => cycle("even", "odd") }
+                %td.bad= link_to_function("< bad", "")
+                %td.word= word
+                %td.good= link_to_function("good >", "")
+            - (Word.all - @used_words.map(&:word).uniq).map(&:word).each do |word|
+              %tr{:class => cycle("even", "odd") }
+                %td.bad= link_to_function("< bad", "")
+                %td.word= word
+                %td.good= link_to_function("good >", "")
+    %br
+    = submit_tag("Save Words")
 
-- if @my_words.present? || @owner
+
+
+
+- if @my_good_words.present? || @my_bad_words.present? || @owner
   .section
     %h3 The Results
     %br
-    - if @words.empty? && @owner
+    - if @used_words.empty? && @owner
       No one has added any words to describe you yet.
     - else
-      = word_chart(@user, @words)
+      - if @good_words.present?
+        = word_chart(@user, @good_words, true)
+        %br
+        %br
+        %br
+      - if @bad_words.present?
+        = word_chart(@user, @bad_words, false)
 
 - if @owner
   .edit_profile.section
@@ -91,7 +193,7 @@
     %p= link_to("bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
     %p= link_to("bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
 
-- if @my_words.present?
+- if @my_good_words.present? || @my_bad_words.present?
   .section
     %h3 Thanks for playing!
     %p

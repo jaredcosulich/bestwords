@@ -37,8 +37,7 @@ class User < ActiveRecord::Base
   FAKE_PASSWORD = "esudfhi3r33"
   SAMPLE_USER = User.new(
     :slug => "sample_the_dog",
-    :name => "Sample the Dog",
-    :suggested_words => "cute, cuddly, fun, best-friend, smart, good at tricks, adorable, energetic"
+    :name => "Sample the Dog"
   )
 
   def self.new_with_session(params, session)
