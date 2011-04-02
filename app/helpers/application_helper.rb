@@ -29,7 +29,7 @@ module ApplicationHelper
       img_src << "&chxr=0,0,#{partitioned_words[0].first[1] + (partitioned_words[0].first[1].to_f * 0.10).ceil},#{(partitioned_words[0].first[1].to_f / 10.0).ceil}"
       img_src << "&chxt=x,y"
       img_src << "&chbh=a,12"
-      img_src << "&chs=600x#{60 + (partitioned_words[0].length * 24)}"
+      img_src << "&chs=600x#{60 + (partitioned_words[0].length * 30)}"
       img_src << "&cht=bhs"
       img_src << "&chco=#{good ? "008000" : "AA0033"}"
       img_src << "&chds=0,#{partitioned_words[0].first[1] + (partitioned_words[0].first[1].to_f * 0.10).ceil}"
@@ -39,7 +39,7 @@ module ApplicationHelper
       img_src << "&chtt=People+think+#{name}+#{good ? "is definitely:" : "is definitely not:"}"
       img_src << "&chts=676767,16"
 
-      chart << "<img src=\"#{img_src.join('')}\" width=\"600\" height=\"#{60 + (partitioned_words[0].length * 15)}\" alt=\"Words that #{good ? "best" : "don't"} describe #{name}\"/>"
+      chart << "<img src=\"#{img_src.join('')}\" width=\"600\" height=\"#{60 + (partitioned_words[0].length * 30)}\" alt=\"Words that #{good ? "best" : "don't"} describe #{name}\"/>"
     end
 
     unless partitioned_words[1].empty?
