@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   FAKE_PASSWORD = "esudfhi3r33"
   SAMPLE_USER = User.new(
     :slug => "sample_the_dog",
-    :name => ""
+    :name => "Sample The Dog"
   ) rescue nil
 
   def self.new_with_session(params, session)
