@@ -32,4 +32,9 @@ OmniauthDeviseExample::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.before_initialize do
+    ::PAPERCLIP_STORAGE_OPTIONS = LOCAL_PAPERCLIP_STORAGE_OPTIONS
+  end
+
 end

@@ -84,7 +84,7 @@
     %h3 Edit Your Page / Profile
     - unless @user.email.starts_with?("tmp")
       %p= link_to_function("click to edit", "$('#edit_profile_form').toggle();")
-    = form_for @user, :html => {:id => "edit_profile_form", :style => (@user.email.present? ? "display: none;" : "")} do |f|
+    = form_for @user, :html => {:multipart => true, :id => "edit_profile_form", :style => (@user.email.present? ? "display: none;" : "")} do |f|
       .profile_field
         = f.label :slug, "Your Page: http://bestwords.me/"
         = f.text_field :slug
@@ -107,6 +107,11 @@
         = f.password_field :password
         .small
           (so you can log in and see the results)
+      .profile_field
+        = f.label :photo, "Your Photo: "
+        = f.file_field :photo
+        .small
+          (your page will look a lot better with a photo)
       = f.submit("Save")
 
   .share_profile
@@ -120,7 +125,7 @@
 
 
 - unless @user != User::SAMPLE_USER && @user.photo.url(:normal) =~ /missing/
-  = image_tag(@user == User::SAMPLE_USER   ? "user_photos/sample.jpg" : @user.photo.url(:normal))
+  = image_tag(@user == User::SAMPLE_USER   ? "user_photos/sample.jpg" : @user.photo.url)
   %br
   %br
   

@@ -22,5 +22,9 @@ OmniauthDeviseExample::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  config.before_initialize do
+    ::PAPERCLIP_STORAGE_OPTIONS = S3_PAPERCLIP_STORAGE_OPTIONS
+  end
 end
 

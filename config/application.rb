@@ -9,6 +9,13 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module OmniauthDeviseExample
   class Application < Rails::Application
+    attr_accessor :cache_buster, :host
+
+    config.generators do |g|
+      g.template_engine :haml
+      g.test_framework :rspec
+      g.helper false
+    end
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -39,5 +46,31 @@ module OmniauthDeviseExample
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    config.before_initialize do
+      Rails.application.host = "#{(Rails.env.production? ? 'www' : Rails.env)}.thematchinggame.com"
+
+      Dir["#{Rails.root}/lib/ruby_ext/*.rb"].sort.each do |file|
+        require file
+      end
+
+      ActiveSupport::Deprecation.silenced = true
+#      ActiveSupport::Deprecation.debug = true
+
+      Rails.application.cache_buster = Time.now.to_i
+      ::S3_PAPERCLIP_STORAGE_OPTIONS = {
+        :storage => :s3,
+        :s3_credentials => "#{Rails.root}/config/s3.yml",
+        :s3_host_alias => 'photos.bestwords.me',
+        :s3_headers => {'Expires' => 1.year.from_now.httpdate},
+        :bucket => 'photos.bestwords.me',
+        :url => ":s3_alias_url",
+        :path => "#{Rails.env}/:id/:style"
+      }
+
+      ::LOCAL_PAPERCLIP_STORAGE_OPTIONS = {
+        :url => "/system/attachments/:attachment/:id/:style/:filename"
+      }
+    end
   end
 end

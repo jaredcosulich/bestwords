@@ -46,4 +46,8 @@ OmniauthDeviseExample::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.before_initialize do
+    ::PAPERCLIP_STORAGE_OPTIONS = S3_PAPERCLIP_STORAGE_OPTIONS
+  end  
 end

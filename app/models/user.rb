@@ -21,18 +21,20 @@ class User < ActiveRecord::Base
   has_many  :user_words
 
   has_attached_file :photo,
-                    :styles => {
-                      :normal => "120x120#"
-                    },
-                    :default_url => "/images/user_photos/missing_:style.png"
-
+                    PAPERCLIP_STORAGE_OPTIONS.merge(
+                      :styles => {
+                        :normal => "120x120#"
+                      },
+                      :default_style => :normal,
+                      :default_url => "/images/user_photos/missing_:style.png"
+                    )
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :omniauthable, :validatable #:flexible_devise_validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :slug, :suggested_words
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :slug, :suggested_words, :photo
 
   FAKE_PASSWORD = "esudfhi3r33"
   SAMPLE_USER = User.new(

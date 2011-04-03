@@ -40,6 +40,10 @@ GEM
     activesupport (3.0.5)
     addressable (2.2.4)
     arel (2.0.9)
+    aws-s3 (0.6.2)
+      builder
+      mime-types
+      xml-simple
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     configuration (1.2.0)
@@ -172,11 +176,13 @@ GEM
     tzinfo (0.3.25)
     warden (1.0.3)
       rack (>= 1.0.0)
+    xml-simple (1.0.15)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-s3 (= 0.6.2)
   devise!
   fixjour
   haml
