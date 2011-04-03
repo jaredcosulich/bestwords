@@ -68,8 +68,8 @@
       $("#" + type).val($("#" + type).val() + ", " + word);
     }
 
-    var myGoodWords = #{@my_good_words.map(&:word).map(&:word).to_json};
-    var myBadWords = #{@my_bad_words.map(&:word).map(&:word).to_json};
+    var myGoodWords = #{@my_good_words.map(&:smart_word).to_json};
+    var myBadWords = #{@my_bad_words.map(&:smart_word).to_json};
     for (i in myGoodWords) {
       addWord(myGoodWords[i], "good_words");
     }
@@ -118,9 +118,9 @@
     %h3 Have Your Friends Describe You
     %p Share either of these links with your friends:
     %p
-      = link_to("bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-      = link_to("bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
+      = link_to("http://bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      = link_to("http://bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
 
 
 
@@ -136,11 +136,11 @@
 - if @my_good_words.present? || @my_bad_words.present?
   .section
     %b Your Best Words:
-    = @my_good_words.map(&:word).map(&:word).join(", ")
+    = @my_good_words.map(&:smart_word).join(", ")
     = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
     %p
       %b Your Worst Words:
-      = @my_bad_words.map(&:word).map(&:word).join(", ")
+      = @my_bad_words.map(&:smart_word).join(", ")
       = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
 
   .section
@@ -173,12 +173,12 @@
               %td.bad= link_to_function("< bad", "")
               %td.word
               %td.good= link_to_function("good >", "")
-            - @used_words.map(&:word).uniq.map(&:word).sort.each do |word|
+            - @used_words.map(&:smart_word).uniq.sort.each do |word|
               %tr{:class => cycle("even", "odd") }
                 %td.bad= link_to_function("< bad", "")
                 %td.word= word
                 %td.good= link_to_function("good >", "")
-            - (Word.all - @used_words.map(&:word).uniq).map(&:word).each do |word|
+            - (Word.all.map(&:word) - @used_words.map(&:smart_word).uniq).each do |word|
               %tr{:class => cycle("even", "odd") }
                 %td.bad= link_to_function("< bad", "")
                 %td.word= word

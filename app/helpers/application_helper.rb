@@ -18,7 +18,7 @@ module ApplicationHelper
 
   def word_chart(user, words, good)
     name = user.name || user.slug
-    word_map = words.inject(Hash.new{|h,k| h[k] = 0}) { |map, w| map[w.word.word.downcase] += 1; map }
+    word_map = words.inject(Hash.new{|h,k| h[k] = 0}) { |map, w| map[w.smart_word.downcase] += 1; map }
     sorted_words = word_map.to_a.sort_by { |word_info| word_info[1] }.reverse
 
     chart = []
