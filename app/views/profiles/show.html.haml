@@ -84,7 +84,7 @@
     %h3 Edit Your Page / Profile
     - unless @user.email.starts_with?("tmp")
       %p= link_to_function("click to edit", "$('#edit_profile_form').toggle();")
-    = form_for @user, :html => {:multipart => true, :id => "edit_profile_form", :style => (@user.email.present? ? "display: none;" : "")} do |f|
+    = form_for @user, :html => {:multipart => true, :id => "edit_profile_form", :style => (@user.email.starts_with?("tmp") ? "" : "display: none;")} do |f|
       .profile_field
         = f.label :slug, "Your Page: http://bestwords.me/"
         = f.text_field :slug
@@ -195,8 +195,7 @@
     %br
     - if @used_words.empty? && @owner
       No one has added any words to describe you yet.
-      %p Add some words yourself to get the ball rolling.
-      Share a link to your page with your friends to see what words they add.
+      %p Share a link to your page with your friends to see what words they add.
     - else
       - if @good_words.present?
         = word_chart(@user, @good_words, true)

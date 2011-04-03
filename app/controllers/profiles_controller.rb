@@ -14,8 +14,8 @@ class ProfilesController < ApplicationController
       end
 
       @good_words, @bad_words = @user.user_words.partition { |uw| uw.good? }
-      @my_good_words = @good_words.select { |w| w.ip == request.remote_ip}
-      @my_bad_words = @bad_words.select { |w| w.ip == request.remote_ip}
+      @my_good_words = @good_words.select { |w| w.ip == session_identifier}
+      @my_bad_words = @bad_words.select { |w| w.ip == session_identifier}
     end
 
     @used_words = @good_words + @bad_words

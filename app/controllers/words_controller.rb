@@ -2,13 +2,9 @@ class WordsController < ApplicationController
   before_filter :lookup_user
 
   def create
-    UserWord.manage_words(@user, request.remote_ip, params[:good_words], true)
-    UserWord.manage_words(@user, request.remote_ip, params[:bad_words], false)
+    UserWord.manage_words(@user, session_identifier, params[:good_words], true)
+    UserWord.manage_words(@user, session_identifier, params[:bad_words], false)
     redirect_to(profile_path(@user))
-  end
-
-  def update
-
   end
 
   private
