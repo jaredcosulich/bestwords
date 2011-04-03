@@ -20,14 +20,12 @@
         %h1
           = link_to("BestWords.Me", "/", :class => "site_title")
         .header_links
-          = link_to 'Home', '/'
           - if user_signed_in?
-            = link_to 'Profile', profile_path(current_user)
-            = link_to 'Edit Profile', edit_user_registration_path(current_user)
             = link_to "Sign out", destroy_user_session_path
+            = link_to 'My Page', profile_path(current_user)
           - else
-            = link_to "Sign up", new_user_registration_path
-          = link_to "Sign in", new_user_session_path
+            = link_to "Sign in", new_user_session_path
+          = link_to 'Home', '/'
 
 
 
