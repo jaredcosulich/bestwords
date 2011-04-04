@@ -129,7 +129,7 @@
 
 
 - unless @user != User::SAMPLE_USER && @user.photo.url(:normal) =~ /missing/
-  = image_tag(@user == User::SAMPLE_USER   ? "user_photos/sample.jpg" : @user.photo.url)
+  = image_tag(@user == User::SAMPLE_USER ? "user_photos/sample.jpg" : @user.photo.url)
   %br
   %br
   
@@ -152,6 +152,7 @@
 - if @owner
   %p
     = link_to_function("Add some words about yourself", "$('#my_words').toggle();")
+
 #my_words{:style => (@owner || @my_good_words.present? || @my_bad_words.present?) ? "display: none;" : ""}
   = form_tag(profile_words_path(@user)) do
     .good_words.selected_words_container_container
@@ -190,14 +191,17 @@
                 %td.bad= link_to_function("< worst", "")
                 %td.word= word
                 %td.good= link_to_function("best >", "")
-    %p
-      Let
-      = @user.name || @user.slug
-      know who you are:
-      %br
-      = text_field_tag("signature")
-      %br
-      %span.small (leave blank to be anonymous)
+    - if @owner
+      = hidden_field_tag("signature", "you")
+    - elsif @user != User::SAMPLE_USER
+      %p
+        Let
+        = @user.name || @user.slug
+        know who you are:
+        %br
+        = text_field_tag("signature")
+        %br
+        %span.small (leave blank to be anonymous)
     = submit_tag("Save Words")
 
 
