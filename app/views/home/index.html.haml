@@ -1,17 +1,17 @@
 %h1.tagline What words best describe you?
 
 %p What words would your friends and family use to describe you?
-%p Create your own bestwords.me page and find out :)
+%p Create your own BestWords.Me page and find out :)
 
 .new_profile
   %h2 Your Personal Page:
-  - if current_user.blank?
+  - if user_signed_in? && current_user.slug.present?
+    = link_to("http://bestwords.me/#{current_user.slug}", profile_path(current_user))
+  - else
     = form_for(@user) do |f|
       = f.label :slug, "http://bestwords.me/"
       = f.text_field :slug
-      = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")
-  - else
-    = link_to("http://bestwords.me/#{current_user.slug}", profile_path(current_user))
+      = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")    
     
 .sample
   = image_tag("user_photos/sample.jpg")
