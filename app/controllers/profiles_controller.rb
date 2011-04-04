@@ -1,4 +1,8 @@
 class ProfilesController < ApplicationController
+  def index
+    redirect_to profile_path(current_user)
+  end
+
   def show
     if params[:id] == "sample_the_dog"
       @user = User::SAMPLE_USER

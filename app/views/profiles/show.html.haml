@@ -171,19 +171,19 @@
         %table
           %tbody
             %tr#typed_word{:style => "display: none;", :class => cycle("even", "odd")}
-              %td.bad= link_to_function("< bad", "")
+              %td.bad= link_to_function("< worst", "")
               %td.word
-              %td.good= link_to_function("good >", "")
+              %td.good= link_to_function("best >", "")
             - @used_words.map(&:smart_word).uniq.sort.each do |word|
               %tr{:class => cycle("even", "odd") }
-                %td.bad= link_to_function("< bad", "")
+                %td.bad= link_to_function("< worst", "")
                 %td.word= word
-                %td.good= link_to_function("good >", "")
+                %td.good= link_to_function("best >", "")
             - (Word.all.map(&:word) - @used_words.map(&:smart_word).uniq).each do |word|
               %tr{:class => cycle("even", "odd") }
-                %td.bad= link_to_function("< bad", "")
+                %td.bad= link_to_function("< worst", "")
                 %td.word= word
-                %td.good= link_to_function("good >", "")
+                %td.good= link_to_function("best >", "")
     %br
     = submit_tag("Save Words")
 

@@ -1,15 +1,17 @@
 OmniauthDeviseExample::Application.routes.draw do
 
   match '/link/:link/:token' => "links#index", :as => "link"
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", :registrations => 'registrations'}
+  match '/my_page' => 'profiles#index', :as => :user_root
 
   resources :sharings
 
   resources :profiles do
     resources :words
   end
-  resources :users
 
+  resources :users, :only => [:create, :update]
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", :registrations => 'registrations'}
+  
   resource :about, :controller => "about"
 
   # The priority is based upon order of creation:
