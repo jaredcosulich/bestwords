@@ -65,6 +65,7 @@
           $("#" + type).val($("#" + type).val().replace(", " + word, ""));
         })
       );
+      $("." + type + " .selected_words_container").scrollTop(5000);
       $("#" + type).val($("#" + type).val() + ", " + word);
     }
 
