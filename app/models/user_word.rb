@@ -19,9 +19,15 @@ class UserWord < ActiveRecord::Base
                  (0...15).collect { UserWord.new(:word => Word.find_by_word("anal")) } +
                  (0...9).collect { UserWord.new(:word => Word.find_by_word("angry")) } rescue nil
 
-  def self.manage_words(user, ip, words_param, good)
+  def self.manage_all_words(user, identifier, good_word_params, bad_word_params)
+    new_words = UserWord.manage_words(user, identifier, good_word_params, true)
+    new_words += UserWord.manage_words(user, identifier, bad_word_params, false)
+    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id))
+  end
+
+  def self.manage_words(user, identifier, words_param, good)
     words = words_param.split(',').map(&:strip).map(&:downcase)
-    existing_words = user.user_words.select { |uw| uw.good == good && uw.ip == ip }
+    existing_words = user.user_words.select { |uw| uw.good == good && uw.ip == identifier }
     new_words = []
     words.each do |w|
       next if w.blank?
@@ -30,11 +36,11 @@ class UserWord < ActiveRecord::Base
       else
         standard_word = Word.find_by_word(w)
         custom_word = (standard_word.nil? ? w : nil)
-        new_words << user.user_words.create(:word => standard_word, :custom_word => custom_word, :ip => ip, :good => good)
+        new_words << user.user_words.create(:word => standard_word, :custom_word => custom_word, :ip => identifier, :good => good)
       end
     end
     existing_words.map(&:destroy)
-    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id))
+    new_words
   end
 
   def smart_word
