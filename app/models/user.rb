@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   include Sluggable
 
   before_validation :generate_slug, :on => :create
+  after_create :notify_admin
   
   validates_uniqueness_of :slug
   validates_length_of :slug, :minimum => 1
@@ -158,5 +159,9 @@ class User < ActiveRecord::Base
       share = message + " " + url
     end
     share
+  end
+
+  def notify_admin
+    AdminMailer.notify("A new bestwords.me user was created.", "New user details:", {:user => self})
   end
 end
