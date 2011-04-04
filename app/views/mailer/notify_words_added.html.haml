@@ -17,7 +17,7 @@
       %p
         You can all of the words people have added to describe you on
         your page:
-        = link_to("bestwords.me/#{@user.name || @user.slug}", @emailing.auto_login_url(profile_path(@user)))
+        = link_to("bestwords.me/#{@user.slug}", @emailing.auto_login_url(profile_path(@user)))
 
       %p
         Best,

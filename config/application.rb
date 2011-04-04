@@ -48,7 +48,7 @@ module OmniauthDeviseExample
     config.filter_parameters += [:password]
 
     config.before_initialize do
-      Rails.application.host = "#{(Rails.env.production? ? 'www' : Rails.env)}.thematchinggame.com"
+      Rails.application.host = "#{(Rails.env.production? ? '' : "#{Rails.env}.")}bestwords.me"
 
       Dir["#{Rails.root}/lib/ruby_ext/*.rb"].sort.each do |file|
         require file
