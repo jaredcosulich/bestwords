@@ -2,8 +2,7 @@ class LinksController < ApplicationController
   def index
     user = User.find_by_perishable_token(params[:token])
 
-    UserSession.create(user)
-    set_current_player(user.player) if user
+    sign_in(user)
     if params[:link].to_i == 0
       redirect_to CGI.unescape(params[:link])
     else
