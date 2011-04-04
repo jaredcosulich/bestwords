@@ -27,6 +27,10 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
   config.include ActionDispatch::TestProcess
 
+  config.before(:each) do
+    ActionMailer::Base.deliveries.clear
+  end
+
 end
 OmniAuth.config.test_mode = true
 

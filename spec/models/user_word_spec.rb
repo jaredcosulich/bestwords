@@ -8,6 +8,7 @@ describe UserWord do
       %w{big large medium small tiny}.each do |w|
         Word.create(:word => w)
       end
+      
     end
 
     it "should create new words for a user and a given ip" do
