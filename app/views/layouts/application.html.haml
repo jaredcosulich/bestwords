@@ -12,6 +12,13 @@
   %meta{:property => "title", :content => "#{@page_title || DEFAULT_PAGE_TITLE}"}
   %meta{:property => "description", :content => "#{@page_description || DEFAULT_PAGE_DESCRIPTION}"}
 
+  %meta{:property => "og:title", :content => "BestWords.Me"}
+  %meta{:property => "og:site_name", :content => "BestWords.Me"}
+  %meta{:property => "og:description", :content => ""}
+  %meta{:property => "og:image", :content => "http://bestwords.me/images/logo.png"}
+  %meta{:property => "og:url", :content => "http://bestwords.me"}
+  %meta{:property => "og:type", :content => "website"}
+
   = content_for :page_specific_head
 
   %body
