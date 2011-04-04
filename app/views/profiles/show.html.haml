@@ -69,8 +69,8 @@
       $("#" + type).val($("#" + type).val() + ", " + word);
     }
 
-    var myGoodWords = #{@my_good_words.map(&:smart_word).to_json};
-    var myBadWords = #{@my_bad_words.map(&:smart_word).to_json};
+    var myGoodWords = #{@my_good_words.map(&:smart_word).sort.to_json};
+    var myBadWords = #{@my_bad_words.map(&:smart_word).sort.to_json};
     for (i in myGoodWords) {
       addWord(myGoodWords[i], "good_words");
     }
