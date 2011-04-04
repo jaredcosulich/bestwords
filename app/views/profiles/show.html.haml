@@ -186,6 +186,9 @@
                 %td.good= link_to_function("best >", "")
     %br
     = submit_tag("Save Words")
+    .small
+      Your words will be shared anonymously with
+      = @user.name || @user.slug
 
 
 
