@@ -14,6 +14,12 @@ OmniauthDeviseExample::Application.routes.draw do
   
   resource :about, :controller => "about"
 
+  namespace :admin do
+#    root :to => "admin#index"
+    resources :emails
+    resources :reports
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,0 +1,16 @@
+%h1 Report
+
+%br
+%br
+
+%h3 Users
+%p= User.count
+
+%h3 User Words
+%p= UserWord.count
+
+%h3 Undefined Words
+%p= UserWord.where("word_id is null").count
+%ul
+  - UserWord.where("word_id is null").order("id desc").limit(20).each do |user_word|
+    %li= user_word.smart_word
