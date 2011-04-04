@@ -4,8 +4,14 @@
       %p
         Someone has added the following words to your page:
 
+      %b Best Words
       %ul
-        - @words.each do |w|
+        - @words.select { |w| w.good? }.each do |w|
+          %li= w.smart_word
+
+      %b Worst Words
+      %ul
+        - @words.select { |w| !w.good? }.each do |w|
           %li= w.smart_word
 
       %p
