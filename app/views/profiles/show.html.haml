@@ -137,11 +137,11 @@
 - if @my_good_words.present? || @my_bad_words.present?
   .section
     %b Your Best Words:
-    = @my_good_words.map(&:smart_word).join(", ")
+    = @my_good_words.map(&:smart_word).sort.join(", ")
     = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
     %p
       %b Your Worst Words:
-      = @my_bad_words.map(&:smart_word).join(", ")
+      = @my_bad_words.map(&:smart_word).sort.join(", ")
       = link_to_function("(edit words)", "$('#my_words').toggle();", :class => "small")
 
   .section
