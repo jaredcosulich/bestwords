@@ -1,5 +1,5 @@
 development:
-  database: bestwords__dev
+  database: bestwords_dev
   adapter: postgresql
   min_messages: warning
 
