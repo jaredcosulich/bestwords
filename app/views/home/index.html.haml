@@ -5,11 +5,14 @@
 
 .new_profile
   %h2 Your Personal Page:
-  = form_for(@user) do |f|
-    = f.label :slug, "http://bestwords.me/"
-    = f.text_field :slug
-    = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")
-
+  - if current_user.blank?
+    = form_for(@user) do |f|
+      = f.label :slug, "http://bestwords.me/"
+      = f.text_field :slug
+      = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")
+  - else
+    = link_to("http://bestwords.me/#{current_user.slug}", profile_path(current_user))
+    
 .sample
   = image_tag("user_photos/sample.jpg")
   %h3 A Sample
