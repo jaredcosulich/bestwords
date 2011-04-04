@@ -37,4 +37,11 @@ OmniauthDeviseExample::Application.configure do
     ::PAPERCLIP_STORAGE_OPTIONS = LOCAL_PAPERCLIP_STORAGE_OPTIONS
   end
 
+  module ::Enumerable
+    def only
+      raise "expected exactly one item but there were #{size}" unless size == 1
+      first
+    end
+  end
+
 end

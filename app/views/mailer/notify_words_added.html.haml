@@ -1,0 +1,21 @@
+%table{:style => "width: 100%; font-size: 11pt;"}
+  %tr
+    %td{:style => "padding: 12px; border: 1px solid #ccc"}
+      %p
+        Someone has added the following words to your page:
+
+      %ul
+        - @words.each do |w|
+          %li= w.smart_word
+
+      %p
+        You can all of the words people have added to describe you on
+        your page:
+        = link_to("bestwords.me/#{@user.name || @user.slug}", @emailing.auto_login_url(profile_path(@user)))
+
+      %p
+        Best,
+        %br
+        Jared (creator of BestWords.Me)
+
+  = render :partial => "mailer/about"

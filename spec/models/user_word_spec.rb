@@ -55,6 +55,16 @@ describe UserWord do
       UserWord.manage_words(@user, "an_ip", ", , ,,,small, ,, ,medium,   , ,,, ,", true)
       @user.reload.user_words.map(&:word).map(&:word).should =~ %w{small medium}
     end
+
+    it "should email the user about new words only" do
+      @user.user_words.create(:word => Word.find_by_word("big"), :ip => "an_ip")
+      UserWord.manage_words(@user, "an_ip", "small,big,medium", true)
+      message = ActionMailer::Base.deliveries.only
+      message.to_addrs.first.to_s.should include(@user.email)
+      message.body.should =~ /small/
+      message.body.should =~ /medium/
+      message.body.should_not =~ /big/
+    end
   end
 
 end

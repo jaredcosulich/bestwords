@@ -22,6 +22,7 @@ class UserWord < ActiveRecord::Base
   def self.manage_words(user, ip, words_param, good)
     words = words_param.split(',').map(&:strip).map(&:downcase)
     existing_words = user.user_words.select { |uw| uw.good == good && uw.ip == ip }
+    new_words = []
     words.each do |w|
       next if w.blank?
       if (existing_word = existing_words.detect { |ew| ew.smart_word == w }).present?
@@ -29,10 +30,11 @@ class UserWord < ActiveRecord::Base
       else
         standard_word = Word.find_by_word(w)
         custom_word = (standard_word.nil? ? w : nil)
-        user.user_words.create(:word => standard_word, :custom_word => custom_word, :ip => ip, :good => good)
+        new_words << user.user_words.create(:word => standard_word, :custom_word => custom_word, :ip => ip, :good => good)
       end
     end
     existing_words.map(&:destroy)
+    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id))
   end
 
   def smart_word

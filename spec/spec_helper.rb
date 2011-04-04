@@ -130,3 +130,10 @@ def omniauth_facebook(uid="222")
    "provider"=>"facebook"}
 end
 
+
+def verify_only_delivery(recipient_email, body_regex)
+  message = ActionMailer::Base.deliveries.only
+  message.to_addrs.first.to_s.should include(recipient_email)
+  message.body.should =~ body_regex
+end
+

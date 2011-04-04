@@ -1,4 +1,7 @@
 OmniauthDeviseExample::Application.routes.draw do
+
+  match '/link/:link/:token' => "links#index", :as => "link"
+
   resources :sharings
 
   resources :profiles do

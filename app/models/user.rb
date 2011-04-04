@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
                       :default_url => "/images/user_photos/missing_:style.png"
                     )
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  devise :database_authenticatable, :registerable,
+  # :confirmable, :lockable and :timeoutable
+  devise :database_authenticatable, :registerable, :token_authenticatable,
          :recoverable, :rememberable, :trackable, :omniauthable, :validatable #:flexible_devise_validatable
 
   # Setup accessible (or protected) attributes for your model
