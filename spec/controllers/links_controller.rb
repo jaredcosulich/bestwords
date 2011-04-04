@@ -1,18 +1,13 @@
 class LinksController < ApplicationController
   def index
-    user = User.find_by_perishable_token(params[:token])
-
-    sign_in(user)
-    if params[:link].to_i == 0
-      redirect_to CGI.unescape(params[:link])
+    if user = User.find_by_authentication_token(params[:token])
+      sign_in(user)
+    end
+    if link = Link.find_by_id(params[:link])
+      link.clicks.create
+      redirect_to(link.path_with_additional_params(params))
     else
-      link = Link.find_by_id(params[:link])
-      if link.nil?
-        redirect_to account_path
-      else
-        link.clicks.create
-        redirect_to(link.path)
-      end
+      redirect_to root_path
     end
   end
 end
