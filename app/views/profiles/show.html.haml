@@ -19,7 +19,6 @@
   
 :javascript
   $(function() {
-    $("#word_progress").focus();
     $("#word_progress").keyup(function() {
       var typed = $(this).val();
       $("#typed_word").find(".word").html(typed);
@@ -76,6 +75,10 @@
     }
     for (i in myBadWords) {
       addWord(myBadWords[i], "bad_words");
+    }
+
+    if (myGoodWords.length == 0 && myBadWords.length == 0 && $("#edit_profile_form").length == 0) {
+      $("#word_progress").focus();
     }
   });
 
