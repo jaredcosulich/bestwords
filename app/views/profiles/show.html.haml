@@ -149,7 +149,10 @@
 
   .section
 
-#my_words{:style => (@my_good_words.blank? && @my_bad_words.blank?) ? "" : "display: none;"}
+- if @owner
+  %p
+    = link_to_function("Add some words about yourself", "$('#my_words').toggle();")
+#my_words{:style => (@owner || @my_good_words.present? || @my_bad_words.present?) ? "display: none;" : ""}
   = form_tag(profile_words_path(@user)) do
     .good_words.selected_words_container_container
       %h3 Best Words
@@ -187,11 +190,15 @@
                 %td.bad= link_to_function("< worst", "")
                 %td.word= word
                 %td.good= link_to_function("best >", "")
-    %br
-    = submit_tag("Save Words")
-    .small
-      Your words will be shared anonymously with
+    %p
+      Let
       = @user.name || @user.slug
+      know who you are:
+      %br
+      = text_field_tag("signature")
+      %br
+      %span.small (leave blank to be anonymous)
+    = submit_tag("Save Words")
 
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110404160705) do
+ActiveRecord::Schema.define(:version => 20110404195205) do
 
   create_table "emailings", :force => true do |t|
     t.integer  "user_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20110404160705) do
     t.string   "ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "signature"
   end
 
   add_index "user_words", ["user_id"], :name => "index_user_words_on_user_id"
