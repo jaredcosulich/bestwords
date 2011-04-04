@@ -14,6 +14,8 @@ gem "sluggable"
 gem "haml"
 gem "heroku"
 
+gem 'hoptoad_notifier', '2.3.8'
+
 
 group :development, :test do
  gem 'rspec-rails'
