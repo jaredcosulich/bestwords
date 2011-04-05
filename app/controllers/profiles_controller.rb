@@ -24,6 +24,6 @@ class ProfilesController < ApplicationController
     end
 
     @used_words = @good_words + @bad_words
-    @owner = current_user == @user
+    @owner = (current_user == @user && !params.include?(:friend_view))
   end
 end
