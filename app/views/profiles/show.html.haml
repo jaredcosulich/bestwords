@@ -252,20 +252,26 @@
                 = info[1][:bad_words].join(", ")
 
 
-.section
-  - if @my_good_words.present? || @my_bad_words.present?
-    %h3 Thanks for playing!
-  %p
-    Now
-    - unless @owner
-      create your own
+- unless @owner
+  .section
+    .p
+      Create your own
       = link_to("BestWords.Me page >", "/")
+-#
+  .section
+    - if @my_good_words.present? || @my_bad_words.present?
+      %h3 Thanks for playing!
+    %p
+      Now
+      - unless @owner
+        create your own
+        = link_to("BestWords.Me page >", "/")
+        %br
+        %br
+        or
+      check out the game I built that inspired BestWords.Me,
+      = link_to("The Matching Game >", "http://www.thematchinggame.com", :target => "_blank")
       %br
       %br
-      or
-    check out the game I built that inspired BestWords.Me,
-    = link_to("The Matching Game >", "http://www.thematchinggame.com", :target => "_blank")
-    %br
-    %br
-    or, if you're getting married, check out my other site,
-    = link_to("WeddingMapper >", "http://www.weddingmapper.com", :target => "_blank")
+      or, if you're getting married, check out my other site,
+      = link_to("WeddingMapper >", "http://www.weddingmapper.com", :target => "_blank")
