@@ -92,11 +92,18 @@
 
 
 - if @owner
+  .share_profile
+    %h3 Have Your Friends Describe You
+    %p Share either of these links with your friends:
+    %p
+      = link_to("http://bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      = link_to("http://bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
+
   .edit_profile
-    %h3 Edit Your Page / Profile
-    - unless @user.email.starts_with?("tmp")
-      %p= link_to_function("click to edit", "$('#edit_profile_form').toggle();")
-    = form_for @user, :html => {:multipart => true, :id => "edit_profile_form", :style => (@user.email.starts_with?("tmp") ? "" : "display: none;")} do |f|
+    %h3 Edit/Enhance Your Page
+    %p= link_to_function("click to edit", "$('#edit_profile_form').toggle();")
+    = form_for @user, :html => {:multipart => true, :id => "edit_profile_form", :style => "display: none;"} do |f|
       .profile_field
         = f.label :slug, "Your Page: http://bestwords.me/"
         = f.text_field :slug
@@ -110,6 +117,11 @@
           = "\"What words best describe #{@user.name || @user.slug}?\""
           below)
       .profile_field
+        = f.label :photo, "Your Photo: "
+        = f.file_field :photo
+        .small
+          (your page will look a lot better with a photo)
+      .profile_field
         = f.label :email, "Your Email: "
         = f.text_field :email, :value => @user.email.starts_with?("tmp") ? "" : @user.email
         .small
@@ -119,20 +131,7 @@
         = f.password_field :password
         .small
           (so you can log in and see the results)
-      .profile_field
-        = f.label :photo, "Your Photo: "
-        = f.file_field :photo
-        .small
-          (your page will look a lot better with a photo)
       = f.submit("Save")
-
-  .share_profile
-    %h3 Have Your Friends Describe You
-    %p Share either of these links with your friends:
-    %p
-      = link_to("http://bestwords.me/#{@user.to_param}", "http://bestwords.me/#{@user.to_param}")
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      = link_to("http://bew.me/#{@user.to_param}", "http://bew.me/#{@user.to_param}")
 
 
 
