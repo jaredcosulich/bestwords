@@ -260,14 +260,22 @@
     .p
       Create your own
       = link_to("BestWords.Me page >", "/")
--#
+
+
+- if (@owner && current_user.created_at < 20.minutes.ago) || (!@owner && (@my_good_words.present? || @my_bad_words.present?))
   .section
-    - if @my_good_words.present? || @my_bad_words.present?
+    - if @owner
+      %h3 While You Wait
+    - elsif @my_good_words.present? || @my_bad_words.present?
       %h3 Thanks for playing!
+
     %p
-      Now
-      - unless @owner
-        create your own
+      - if @owner
+        While you're waiting for friends to add words:
+        %br
+        %br
+      - else
+        Now create your own
         = link_to("BestWords.Me page >", "/")
         %br
         %br
