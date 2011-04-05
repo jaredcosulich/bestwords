@@ -2,22 +2,37 @@ class UserWord < ActiveRecord::Base
   belongs_to :user
   belongs_to :word
 
-  SAMPLE_BEST_WORDS = (0...49).collect { UserWord.new(:word => Word.find_by_word("cute")) } +
-                 (0...34).collect { UserWord.new(:word => Word.find_by_word("fun")) } +
-                 (0...29).collect { UserWord.new(:word => Word.find_by_word("energetic")) } +
-                 (0...26).collect { UserWord.new(:word => Word.find_by_word("cuddly")) } +
-                 (0...19).collect { UserWord.new(:word => Word.find_by_word("adventurous")) } +
-                 (0...18).collect { UserWord.new(:word => Word.find_by_word("adorable")) } +
-                 (0...15).collect { UserWord.new(:word => Word.find_by_word("outdoorsy")) } +
-                 (0...14).collect { UserWord.new(:word => Word.find_by_word("small")) } rescue nil
+  SAMPLE_WORDS = [
+    UserWord.new(:word => Word.find_by_word("cute"), :ip => "ip1", :signature => "Fido", :good => true, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("adorable"), :ip => "ip1", :signature => "Fido", :good => true, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("outdoorsy"), :ip => "ip1", :signature => "Fido", :good => true, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("adventurous"), :ip => "ip1", :signature => "Fido", :good => true, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("fun"), :ip => "ip2", :signature => "Muffy", :good => true, :created_at => 3.hours.ago),
+    UserWord.new(:word => Word.find_by_word("adorable"), :ip => "ip2", :signature => "Muffy", :good => true, :created_at => 3.hours.ago),
+    UserWord.new(:word => Word.find_by_word("fun"), :ip => "ip2", :signature => "Muffy", :good => true, :created_at => 3.hours.ago),
+    UserWord.new(:word => Word.find_by_word("cute"), :ip => "ip3", :signature => "Rufus", :good => true, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("cute"), :ip => "ip3", :signature => "Rufus", :good => true, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("adventurous"), :ip => "ip3", :signature => "Rufus", :good => true, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("loving"), :ip => "ip4", :signature => "Buster", :good => true, :created_at => 30.minutes.ago),
+    UserWord.new(:word => Word.find_by_word("cute"), :ip => "ip4", :signature => "Buster", :good => true, :created_at => 30.minutes.ago),
+    UserWord.new(:word => Word.find_by_word("adorable"), :ip => "ip4", :signature => "Buster", :good => true, :created_at => 30.minutes.ago),
+    UserWord.new(:word => Word.find_by_word("spunky"), :ip => "ip4", :signature => "Buster", :good => true, :created_at => 30.minutes.ago),
 
-  SAMPLE_WORST_WORDS = (0...61).collect { UserWord.new(:word => Word.find_by_word("ugly")) } +
-                 (0...42).collect { UserWord.new(:word => Word.find_by_word("well-behaved")) } +
-                 (0...36).collect { UserWord.new(:word => Word.find_by_word("evil")) } +
-                 (0...33).collect { UserWord.new(:word => Word.find_by_word("mean")) } +
-                 (0...26).collect { UserWord.new(:word => Word.find_by_word("arrogant")) } +
-                 (0...15).collect { UserWord.new(:word => Word.find_by_word("anal")) } +
-                 (0...9).collect { UserWord.new(:word => Word.find_by_word("angry")) } rescue nil
+    UserWord.new(:word => Word.find_by_word("evil"), :ip => "ip1", :signature => "Fido", :good => false, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("mean"), :ip => "ip1", :signature => "Fido", :good => false, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("big"), :ip => "ip1", :signature => "Fido", :good => false, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("bad"), :ip => "ip1", :signature => "Fido", :good => false, :created_at => 5.hours.ago),
+    UserWord.new(:word => Word.find_by_word("bad"), :ip => "ip2", :signature => "Muffy", :good => false, :created_at => 3.hours.ago),
+    UserWord.new(:word => Word.find_by_word("mean"), :ip => "ip2", :signature => "Muffy", :good => false, :created_at => 3.hours.ago),
+    UserWord.new(:word => Word.find_by_word("evil"), :ip => "ip3", :signature => "Rufus", :good => false, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("ugly"), :ip => "ip3", :signature => "Rufus", :good => false, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("dumb"), :ip => "ip3", :signature => "Rufus", :good => false, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("mean"), :ip => "ip3", :signature => "Rufus", :good => false, :created_at => 2.hours.ago),
+    UserWord.new(:word => Word.find_by_word("mean"), :ip => "ip4", :signature => "Buster", :good => false, :created_at => 30.minutes.ago),
+    UserWord.new(:word => Word.find_by_word("evil"), :ip => "ip4", :signature => "Buster", :good => false, :created_at => 30.minutes.ago),
+    UserWord.new(:word => Word.find_by_word("dangerous"), :ip => "ip4", :signature => "Buster", :good => false, :created_at => 30.minutes.ago),
+    UserWord.new(:word => Word.find_by_word("bad"), :ip => "ip4", :signature => "Buster", :good => false, :created_at => 30.minutes.ago)
+  ] rescue nil
 
   def self.manage_all_words(user, identifier, good_word_params, bad_word_params, signature)
     new_words = UserWord.manage_words(user, identifier, good_word_params, true, signature)
@@ -45,6 +60,10 @@ class UserWord < ActiveRecord::Base
 
   def smart_word
     word.present? ? word.word : custom_word
+  end
+
+  def smart_signature
+    signature.present? ? signature : "Anonymous"
   end
 
 end

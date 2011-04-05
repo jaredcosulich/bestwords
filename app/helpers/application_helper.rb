@@ -19,39 +19,37 @@ module ApplicationHelper
   def word_chart(user, words, good)
     name = user.name || user.slug
     word_map = words.inject(Hash.new{|h,k| h[k] = 0}) { |map, w| map[w.smart_word.downcase] += 1; map }
-    sorted_words = word_map.to_a.sort_by { |word_info| word_info[1] }.reverse
+    sorted_words = word_map.to_a.sort_by { |word_info| word_info[1] }.reverse[0...5]
 
-    chart = []
-    partitioned_words = sorted_words.partition { |word_info| word_info[1] > 1 }
-    unless partitioned_words[0].empty?
-      img_src = ["http://chart.apis.google.com/chart?chxl=1:|"]
-      img_src << partitioned_words[0].reverse.collect { |word_info| word_info[0] }.join("|")
-      img_src << "&chxr=0,0,#{partitioned_words[0].first[1] + (partitioned_words[0].first[1].to_f * 0.10).ceil},#{(partitioned_words[0].first[1].to_f / 10.0).ceil}"
-      img_src << "&chxt=x,y"
-      img_src << "&chbh=a,12"
-      img_src << "&chs=600x#{60 + (partitioned_words[0].length * 30)}"
-      img_src << "&cht=bhs"
-      img_src << "&chco=#{good ? "008000" : "AA0033"}"
-      img_src << "&chds=0,#{partitioned_words[0].first[1] + (partitioned_words[0].first[1].to_f * 0.10).ceil}"
-      img_src << "&chd=t:"
-      img_src << partitioned_words[0].collect { |word_info| word_info[1] }.join(",")
-      img_src << "&chma=|#{partitioned_words[0].length}"
-      img_src << "&chtt=People+think+#{name}+#{good ? "is definitely:" : "is definitely not:"}"
-      img_src << "&chts=676767,16"
+    img_src = ["http://chart.apis.google.com/chart?chxl=1:|"]
+    img_src << sorted_words.reverse.collect { |word_info| word_info[0] }.join("|")
+    img_src << "&chxr=0,0,#{sorted_words.first[1] + (sorted_words.first[1].to_f * 0.10).ceil},#{(sorted_words.first[1].to_f / 10.0).ceil}"
+    img_src << "&chxt=x,y"
+    img_src << "&chbh=a,12"
+    img_src << "&chs=300x#{60 + (sorted_words.length * 30)}"
+    img_src << "&cht=bhs"
+    img_src << "&chco=#{good ? "008000" : "AA0033"}"
+    img_src << "&chds=0,#{sorted_words.first[1] + (sorted_words.first[1].to_f * 0.10).ceil}"
+    img_src << "&chd=t:"
+    img_src << sorted_words.collect { |word_info| word_info[1] }.join(",")
+    img_src << "&chma=|#{sorted_words.length}"
+    img_src << "&chtt=Top 5 #{good ? "Best" : "Worst"} Words"
+    img_src << "&chts=676767,16"
 
-      chart << "<img src=\"#{img_src.join('')}\" width=\"600\" height=\"#{60 + (partitioned_words[0].length * 30)}\" alt=\"Words that #{good ? "best" : "don't"} describe #{name}\"/>"
+    "<img class='word_chart' src=\"#{img_src.join('')}\" width=\"300\" height=\"#{60 + (sorted_words.length * 30)}\" alt=\"Words that #{good ? "best" : "don't"} describe #{name}\"/>".html_safe
+  end
+
+  def grouped_words(user_words)
+    map = Hash.new { |h,k| h[k] = {}}
+    user_words.each do |uw|
+      map[uw.ip][:time] = uw.created_at if map[uw.ip][:time].nil? || map[uw.ip][:time] < uw.created_at
+      map[uw.ip][:signature] = uw.smart_signature if map[uw.ip][:signature].nil?
+      map[uw.ip][:good_words] = [] if map[uw.ip][:good_words].nil?
+      map[uw.ip][:bad_words] = [] if map[uw.ip][:bad_words].nil?
+      map[uw.ip][:good_words] << uw.smart_word if uw.good?
+      map[uw.ip][:bad_words] << uw.smart_word if !uw.good?
     end
-
-    unless partitioned_words[1].empty?
-      chart << "<p>"
-      chart << "#{name} is #{"also " unless partitioned_words[0].empty?}#{"not" unless good} (each of these words has only been suggested once):"
-      chart << "</p>"
-      chart << "<div class='explanation'>"
-      chart << partitioned_words[1].sort.collect { |word_info| word_info[0] }.join(", ")
-      chart << "</div>"
-    end
-
-    chart.join("").html_safe
+    map.to_a
   end
 
 end

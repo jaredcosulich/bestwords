@@ -16,7 +16,11 @@
   == .selected_words { padding: 6px 0 12px 0; }
   == .selected_words .selected_word { display: block; margin-top: 12px; }
   == #word_progress { font-size: 12pt; margin: 3px 0 6px; }
-  
+  == .recent_words { margin: auto; }
+  == .recent_words .recent_words_for_ip { margin-bottom: 12px; text-align: left; }
+  == .recent_words .recent_words_for_ip .name { font-weight: bold; padding: 24px 12px 0 0; }
+  == .recent_words .recent_words_for_ip .words { padding-top: 12px; }
+
 :javascript
   $(function() {
     $("#word_progress").keyup(function() {
@@ -58,6 +62,10 @@
     }
 
     function addWord(word, type) {
+      if ($("." + type + " .selected_words .selected_word").length >= 4) {
+        alert("You've already added the maximum number of \"" + type.replace("_", "\" ") + ".\r\rClick a word in your list to remove it and replace it with this word.");
+        return;
+      }
       $("." + type + " .selected_words").append(
         $("<a/>").addClass("selected_word").html(word).attr("href", "javascript:void(0)").click(function() {
           this.parentNode.removeChild(this);
@@ -161,7 +169,8 @@
       is definitely:
       .selected_words_container
         .selected_words
-          .small click a word to remove it
+          .small add up to 4 "best" words
+          %p.small click a word to remove it
     = hidden_field_tag("good_words")
     .bad_words.selected_words_container_container
       %h3 Worst Words
@@ -169,8 +178,9 @@
       is definitely not:
       .selected_words_container
         .selected_words
-          .small click a word to remove it
-    = hidden_field_tag("bad_words")      
+          .small add up to 4 "worst" words
+          %p.small click a word to remove it
+    = hidden_field_tag("bad_words")
     .word_list_container
       Type a word or select from the list:
       = text_field_tag("word_progress")
@@ -193,7 +203,7 @@
                 %td.good= link_to_function("best >", "")
     - if @owner
       = hidden_field_tag("signature", "you")
-    - elsif @user != User::SAMPLE_USER
+    - else
       %p
         Let
         = @user.name || @user.slug
@@ -207,9 +217,11 @@
 
 
 
-- if @my_good_words.present? || @my_bad_words.present? || @owner
+- if @good_words.present? || @bad_words.present?
   .section
-    %h3 The Results
+    %h3
+      Best and Worst Words for
+      = @user.name || @user.slug
     %br
     - if @used_words.empty? && @owner
       No one has added any words to describe you yet.
@@ -217,26 +229,43 @@
     - else
       - if @good_words.present?
         = word_chart(@user, @good_words, true)
-        %br
-        %br
-        %br
       - if @bad_words.present?
         = word_chart(@user, @bad_words, false)
 
-- if @my_good_words.present? || @my_bad_words.present?
   .section
+    %h3
+      Recently Added Words for
+      = @user.name || @user.slug
+    %table.recent_words
+      %tbody
+        - grouped_words(@used_words).sort_by { |info| info[1][:time] }.reverse.each do |info|
+          %tr.recent_words_for_ip
+            %td.name
+              = info[1][:signature]
+              added:
+            %td
+              .words
+                %b Best:
+                = info[1][:good_words].join(", ")
+              .words
+                %b Worst:
+                = info[1][:bad_words].join(", ")
+
+
+.section
+  - if @my_good_words.present? || @my_bad_words.present?
     %h3 Thanks for playing!
-    %p
-      Now
-      - unless @owner
-        create your own
-        = link_to("BestWords.Me page >", "/")
-        %br
-        %br
-        or
-      check out the game I built that inspired BestWords.Me,
-      = link_to("The Matching Game >", "http://www.thematchinggame.com", :target => "_blank")
+  %p
+    Now
+    - unless @owner
+      create your own
+      = link_to("BestWords.Me page >", "/")
       %br
       %br
-      or, if you're getting married, check out my other site,
-      = link_to("WeddingMapper >", "http://www.weddingmapper.com", :target => "_blank")
+      or
+    check out the game I built that inspired BestWords.Me,
+    = link_to("The Matching Game >", "http://www.thematchinggame.com", :target => "_blank")
+    %br
+    %br
+    or, if you're getting married, check out my other site,
+    = link_to("WeddingMapper >", "http://www.weddingmapper.com", :target => "_blank")
