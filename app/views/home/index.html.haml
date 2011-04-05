@@ -1,3 +1,14 @@
+:javascript
+  $(function(){
+    $("#user_slug").focus(function() {
+      if ($(this).val() == "your_name") $(this).val("");
+    });
+
+    $("#user_slug").focusout(function() {
+      if ($(this).val() == "") $(this).val("your_name");
+    });
+  });
+
 %h1.tagline What words best describe you?
 
 %p What words would your friends and family use to describe you?
@@ -10,7 +21,7 @@
   - else
     = form_for(@user) do |f|
       = f.label :slug, "http://bestwords.me/"
-      = f.text_field :slug
+      = f.text_field :slug, :value => "your_name"
       = f.submit("Create >", :style => "font-size: 12pt; width: 5em;")    
     
 .sample
