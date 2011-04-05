@@ -6,7 +6,9 @@ OmniauthDeviseExample::Application.routes.draw do
   resources :sharings
 
   resources :profiles do
-    resources :words
+    resources :words do
+      collection { delete :destroy_all }
+    end
   end
 
   resources :users, :only => [:create, :update]

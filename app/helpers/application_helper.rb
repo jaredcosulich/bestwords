@@ -33,10 +33,10 @@ module ApplicationHelper
     img_src << "&chd=t:"
     img_src << sorted_words.collect { |word_info| word_info[1] }.join(",")
     img_src << "&chma=|#{sorted_words.length}"
-    img_src << "&chtt=Top 5 #{good ? "Best" : "Worst"} Words"
+    img_src << "&chtt=Top #{sorted_words.length} #{good ? "Best" : "Worst"} Words"
     img_src << "&chts=676767,16"
 
-    "<img class='word_chart' src=\"#{img_src.join('')}\" width=\"300\" height=\"#{60 + (sorted_words.length * 30)}\" alt=\"Words that #{good ? "best" : "don't"} describe #{name}\"/>".html_safe
+    "<img class='word_chart' src=\"#{img_src.join('')}\" width=\"300\" height=\"#{60 + (sorted_words.length * 30)}\" alt=\"Top #{sorted_words.length} #{good ? "Best" : "Worst"} Words\"/>".html_safe
   end
 
   def grouped_words(user_words)
@@ -46,8 +46,8 @@ module ApplicationHelper
       map[uw.ip][:signature] = uw.smart_signature if map[uw.ip][:signature].nil?
       map[uw.ip][:good_words] = [] if map[uw.ip][:good_words].nil?
       map[uw.ip][:bad_words] = [] if map[uw.ip][:bad_words].nil?
-      map[uw.ip][:good_words] << uw.smart_word if uw.good?
-      map[uw.ip][:bad_words] << uw.smart_word if !uw.good?
+      map[uw.ip][:good_words] << uw if uw.good?
+      map[uw.ip][:bad_words] << uw if !uw.good?
     end
     map.to_a
   end

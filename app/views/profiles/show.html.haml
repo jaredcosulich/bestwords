@@ -19,6 +19,7 @@
   == .recent_words { margin: auto; }
   == .recent_words .recent_words_for_ip { margin-bottom: 12px; text-align: left; }
   == .recent_words .recent_words_for_ip .name { font-weight: bold; padding: 24px 12px 0 0; }
+  == .recent_words .recent_words_for_ip .name form { margin-top: 9px; }
   == .recent_words .recent_words_for_ip .words { padding-top: 12px; }
 
 :javascript
@@ -241,13 +242,17 @@
             %td.name
               = info[1][:signature]
               added:
+              - if @owner
+                = form_for :user_words, :url => destroy_all_profile_words_path(@user), :html => {:method => :delete} do
+                  = hidden_field_tag("user_words_to_delete", (info[1][:good_words] + info[1][:bad_words]).map(&:id).join(","))
+                  = submit_tag("Delete Words", :confirm => "Are you sure you want to delete this person's words?")
             %td
               .words
                 %b Best:
-                = info[1][:good_words].join(", ")
+                = info[1][:good_words].map(&:smart_word).join(", ")
               .words
                 %b Worst:
-                = info[1][:bad_words].join(", ")
+                = info[1][:bad_words].map(&:smart_word).join(", ")
 
 
 - unless @owner

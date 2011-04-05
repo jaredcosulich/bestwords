@@ -6,6 +6,12 @@ class WordsController < ApplicationController
     redirect_to(profile_path(@user))
   end
 
+  def destroy_all
+    ids_to_delete = params[:user_words_to_delete].split(",").map(&:to_i)
+    @user.user_words.select { |uw| ids_to_delete.include?(uw.id) }.each { |uw| uw.destroy }
+    redirect_to profile_path(@user)
+  end
+
   private
   def lookup_user
     if params[:profile_id] == "sample_the_dog"
