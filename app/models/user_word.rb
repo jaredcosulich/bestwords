@@ -63,7 +63,7 @@ class UserWord < ActiveRecord::Base
   end
 
   def smart_signature
-    signature.present? ? signature : "Anonymous"
+    signature.present? ? signature : "Someone"
   end
 
 end
