@@ -37,7 +37,7 @@ class UserWord < ActiveRecord::Base
   def self.manage_all_words(user, identifier, good_word_params, bad_word_params, signature)
     new_words = UserWord.manage_words(user, identifier, good_word_params, true, signature)
     new_words += UserWord.manage_words(user, identifier, bad_word_params, false, signature)
-    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id), signature)
+    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id), signature) unless new_words.blank?
   end
 
   def self.manage_words(user, identifier, words_param, good, signature)
