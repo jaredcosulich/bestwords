@@ -6,8 +6,8 @@
 %h3 Users
 %p= User.count
 %ul
-  - User.order("id desc").limit(5).each do |user|
-    %li= link_to("#{user.name} - #{user.slug}", profile_path(user))
+  - User.order("id desc").limit(10).each do |user|
+    %li= link_to("#{user.name} - #{user.slug} - #{user.user_words.count} - #{user.user_words.select("distinct(ip)").count}", profile_path(user))
 
 %br
 
