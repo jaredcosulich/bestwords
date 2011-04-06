@@ -1,6 +1,10 @@
 class WordsController < ApplicationController
   before_filter :lookup_user
 
+  def index
+    redirect_to profile_path(@user)
+  end
+
   def create
     UserWord.manage_all_words(@user, session_identifier, params[:good_words], params[:bad_words], params[:signature])
     redirect_to(profile_path(@user))
