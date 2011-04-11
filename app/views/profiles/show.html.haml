@@ -202,7 +202,9 @@
                 %td.bad= link_to_function("< worst", "")
                 %td.word= word
                 %td.good= link_to_function("best >", "")
-    - unless @owner
+    - if @owner
+      = hidden_field_tag("signature", "self")
+    - else
       %p
         Let
         = @user.name || @user.slug

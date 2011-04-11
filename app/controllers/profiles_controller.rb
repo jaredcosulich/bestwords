@@ -26,4 +26,10 @@ class ProfilesController < ApplicationController
     @used_words = @good_words + @bad_words
     @owner = (current_user == @user && !params.include?(:friend_view))
   end
+
+  def completed_profile
+    user = User.find_by_slug(params[:id], :include => :user_words)
+    render :text => "false" and return if user.nil? || user.contributors_other_than_self < 2
+    render :text => "true"
+  end
 end

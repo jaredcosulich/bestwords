@@ -4,7 +4,7 @@ class UsersController < ApplicationController
       redirect_to root_path
       return
     end
-    @user = User.create(params[:user].merge(:email => "tmp#{Time.new.to_i}@example.com", :password => User::FAKE_PASSWORD, :password_confirmation => User::FAKE_PASSWORD))
+    @user = User.create(params[:user].merge(:email => "tmp#{Time.new.to_i}@example.com", :password => User::FAKE_PASSWORD, :password_confirmation => User::FAKE_PASSWORD, :ip => session_identifier))
     sign_in(@user)
     redirect_to profile_path(@user)
   end

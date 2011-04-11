@@ -129,6 +129,10 @@ class User < ActiveRecord::Base
     name || email
   end
 
+  def contributors_other_than_self
+    user_words.select { |uw| uw.signature != "self" }.collect { |uw| uw.ip }.uniq.length
+  end
+
   private
 
   def populate_photo_from_url(image_url)

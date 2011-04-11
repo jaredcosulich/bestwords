@@ -37,7 +37,7 @@ class UserWord < ActiveRecord::Base
   def self.manage_all_words(user, identifier, good_word_params, bad_word_params, signature)
     new_words = UserWord.manage_words(user, identifier, good_word_params, true, signature)
     new_words += UserWord.manage_words(user, identifier, bad_word_params, false, signature)
-    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id), signature) unless new_words.blank?
+    Emailing.deliver("notify_words_added", user.id, new_words.map(&:id), signature) unless new_words.blank? || signature == "self"
   end
 
   def self.manage_words(user, identifier, words_param, good, signature)
@@ -63,7 +63,7 @@ class UserWord < ActiveRecord::Base
   end
 
   def smart_signature
-    signature.present? ? signature : "Someone"
+    (signature.blank? || signature == "self") ? "Someone" : signature
   end
 
 end
